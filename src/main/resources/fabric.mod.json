@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "id": "pvpflag",
+  "version": "${version}",
+  "name": "pvpflag",
+  "description": "",
+  "authors": ["rkkm"],
+  "contact": {
+    "repo": "https://github.com/karma/pvpflag"
+  },
+  "license": "MIT",
+  "icon": "assets/pvpflag/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "io.github.realkarmakun.pvpflag.PvpFlagClient"
+    ],
+    "main": [
+      "io.github.realkarmakun.pvpflag.PvpFlagMod"
+    ]
+  },
+  "mixins": [
+    "pvpflag.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
