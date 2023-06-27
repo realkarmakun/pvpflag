@@ -18,8 +18,8 @@ public class PvpFlagInputHandler {
 
     public static void registerKeyInputs() {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            if (switchPvpStatus.isDown()) {
-                ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_UP_ID, PacketByteBufs.create());
+            if (switchPvpStatus.consumeClick()) {
+                ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_SWITCH_ID, PacketByteBufs.create());
             }
         });
     }
@@ -28,7 +28,7 @@ public class PvpFlagInputHandler {
         switchPvpStatus = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 PVP_FLAG_KEY,
                 InputConstants.Type.KEYSYM,
-                GLFW.GLFW_KEY_L,
+                GLFW.GLFW_KEY_K,
                 PVP_FLAG_KEY_CATEGORY
         ));
 

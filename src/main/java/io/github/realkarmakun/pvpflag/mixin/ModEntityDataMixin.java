@@ -1,7 +1,6 @@
 package io.github.realkarmakun.pvpflag.mixin;
 
-import io.github.realkarmakun.pvpflag.PersistentEntityData;
-import io.github.realkarmakun.pvpflag.PvpFlagMod;
+import io.github.realkarmakun.pvpflag.util.PersistentEntityData;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -25,15 +24,16 @@ public class ModEntityDataMixin implements PersistentEntityData {
     @Inject(method = "save", at = @At("HEAD"))
     protected void injectWriteMethod(CompoundTag compoundTag, CallbackInfoReturnable clInfo) {
         if (persistentData != null) {
-            compoundTag.put("pvpflag.switch_status", persistentData);
+            compoundTag.put("pvpflag", persistentData);
         }
     }
 
     @Inject(method = "load", at = @At("HEAD"))
     protected void injectWriteMethod(CompoundTag compoundTag, CallbackInfo clInfo) {
-        if (compoundTag.contains("pvpflag.switch_status")) {
-            persistentData = compoundTag.getCompound("pvpflag.switch_status");
+        if (compoundTag.contains("pvpflag")) {
+            persistentData = compoundTag.getCompound("pvpflag");
         }
     }
+
 
 }
