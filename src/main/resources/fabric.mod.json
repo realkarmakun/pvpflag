@@ -8,6 +8,7 @@
   "contact": {
     "repo": "https://github.com/karma/pvpflag"
   },
+  "accessWidener" : "pvpflag.accesswidener",
   "license": "MIT",
   "icon": "assets/pvpflag/icon.png",
   "environment": "*",

@@ -6,6 +6,7 @@ import io.github.realkarmakun.pvpflag.networking.PvpFlagNetworkHandler;
 import io.github.realkarmakun.pvpflag.util.PersistentEntityData;
 import io.github.realkarmakun.pvpflag.util.PvpFlagData;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.minecraft.server.level.ServerPlayer;
 import org.slf4j.Logger;
@@ -27,7 +28,6 @@ public class PvpFlagMod implements ModInitializer {
             if (handler.getPlayer() instanceof PersistentEntityData player && !PvpFlagData.hasStatus(player)) {
                 PvpFlagData.setStatus(false, player);
             }
-
         });
 
     }

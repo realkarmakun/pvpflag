@@ -12,7 +12,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class PvpFlagHudOverlay implements HudRenderCallback {
-    private static final ResourceLocation PVP_FLAG_UP = new ResourceLocation(PvpFlagMod.MOD_ID, "textures/basic_skull.png");
+    public static final ResourceLocation PVP_FLAG_UP = new ResourceLocation(PvpFlagMod.MOD_ID, "textures/basic_skull.png");
     //private static final ResourceLocation PVPF_FLAG_DOWN;
 
     @Override

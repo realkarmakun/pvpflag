@@ -22,7 +22,7 @@ public class ModEntityDataMixin implements PersistentEntityData {
     }
 
     @Inject(method = "save", at = @At("HEAD"))
-    protected void injectWriteMethod(CompoundTag compoundTag, CallbackInfoReturnable clInfo) {
+    protected void injectWriteMethod(CompoundTag compoundTag, CallbackInfoReturnable<Boolean> clInfo) {
         if (persistentData != null) {
             compoundTag.put("pvpflag", persistentData);
         }

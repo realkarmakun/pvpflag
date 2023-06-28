@@ -3,6 +3,7 @@ package io.github.realkarmakun.pvpflag.util;
 import io.github.realkarmakun.pvpflag.networking.PvpFlagNetworkHandler;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 
 public class PvpFlagData {
@@ -16,12 +17,13 @@ public class PvpFlagData {
         return tagData.getBoolean("is-up");
     }
 
-    public static void switchStatus(PersistentEntityData player) {
+    public static boolean switchStatus(PersistentEntityData player) {
         final var tagData = player.getPersistentData();
         final var newState = !tagData.getBoolean("is-up");
         tagData.putBoolean("is-up", newState);
         // Sync the Data
         syncSwitchStatus(newState, (ServerPlayer) player);
+        return newState;
     }
 
     public static void setStatus(boolean state, PersistentEntityData player) {
@@ -32,6 +34,7 @@ public class PvpFlagData {
 
     public static void syncSwitchStatus(boolean state, ServerPlayer player) {
         var buffer = PacketByteBufs.create();
+        buffer.writeUUID(player.getUUID());
         buffer.writeBoolean(state);
         ServerPlayNetworking.send(player, PvpFlagNetworkHandler.PVP_FLAG_SYNC_ID, buffer);
     }
