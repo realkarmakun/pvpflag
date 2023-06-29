@@ -16,7 +16,7 @@ public class PvpFlagClient implements ClientModInitializer {
 
         PvpFlagInputHandler.register();
 
-        PvpFlagNetworkHandler.registerServerToClientPackets();
+        //PvpFlagNetworkHandler.registerServerToClientPackets();
 
         HudRenderCallback.EVENT.register(new PvpFlagHudOverlay());
 

@@ -1,6 +1,7 @@
 package io.github.realkarmakun.pvpflag.keybinds;
 
 import com.mojang.blaze3d.platform.InputConstants;
+import io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar;
 import io.github.realkarmakun.pvpflag.networking.PvpFlagNetworkHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -24,19 +25,23 @@ public class PvpFlagInputHandler {
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (switchPvpStatus.consumeClick()) {
                 numberOfTicksHeld++;
-            } else if (numberOfTicksHeld != 0) {
+            } else if (numberOfTicksHeld != 0 && client.player != null) {
                 ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_SWITCH_ID, PacketByteBufs.create());
+                //PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.get(client.player).switchState();
                 numberOfTicksHeld = 0;
             }
+            /*if (switchPvpStatus.isDown()) {
+                *//*PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.get(client.player).switchState();*//*
+                ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_SWITCH_ID, PacketByteBufs.create());
+            }*/
         });
     }
 
     public static void register() {
-        switchPvpStatus = KeyBindingHelper.registerKeyBinding(new ToggleKeyMapping(
+        switchPvpStatus = KeyBindingHelper.registerKeyBinding(new KeyMapping(
                 PVP_FLAG_KEY,
                 GLFW.GLFW_KEY_K,
-                PVP_FLAG_KEY_CATEGORY,
-                () -> true
+                PVP_FLAG_KEY_CATEGORY
         ));
 
         registerKeyInputs();

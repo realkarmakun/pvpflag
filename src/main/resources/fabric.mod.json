@@ -5,6 +5,14 @@
   "name": "pvpflag",
   "description": "",
   "authors": ["rkkm"],
+  "contributors": [
+    {
+      "name": "SkaldingDelight",
+      "contact": {
+        "homepage": "https://skalding.itch.io/"
+      }
+    }
+  ],
   "contact": {
     "repo": "https://github.com/karma/pvpflag"
   },
@@ -18,6 +26,9 @@
     ],
     "main": [
       "io.github.realkarmakun.pvpflag.PvpFlagMod"
+    ],
+    "cardinal-components-entity": [
+      "io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar"
     ]
   },
   "mixins": [
@@ -27,5 +38,13 @@
     "fabricloader": ">=${loader_version}",
     "fabric": "*",
     "minecraft": "${minecraft_version}"
+  },
+  "suggests": {
+    "cardinal-components-api": ">=5.2.1"
+  },
+  "custom": {
+    "cardinal-components": [
+      "pvpflag:player-flag-data"
+    ]
   }
 }

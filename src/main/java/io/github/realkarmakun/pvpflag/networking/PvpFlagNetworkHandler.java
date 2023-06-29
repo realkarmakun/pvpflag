@@ -10,13 +10,13 @@ import net.minecraft.resources.ResourceLocation;
 public class PvpFlagNetworkHandler  {
 
     public static final ResourceLocation PVP_FLAG_SWITCH_ID = new ResourceLocation(PvpFlagMod.MOD_ID, "pvpflagswitch");
-    public static final ResourceLocation PVP_FLAG_SYNC_ID = new ResourceLocation(PvpFlagMod.MOD_ID, "pvpflagsync");
+    //public static final ResourceLocation PVP_FLAG_SYNC_ID = new ResourceLocation(PvpFlagMod.MOD_ID, "pvpflagsync");
 
     public static void registerClientToServerPackets() {
         ServerPlayNetworking.registerGlobalReceiver(PVP_FLAG_SWITCH_ID, PvpFlagSwitchClientToServer::receive);
     }
 
-    public static void registerServerToClientPackets() {
+    /*public static void registerServerToClientPackets() {
         ClientPlayNetworking.registerGlobalReceiver(PVP_FLAG_SYNC_ID, PvpFlagSyncServerToClient::receive);
-    }
+    }*/
 }

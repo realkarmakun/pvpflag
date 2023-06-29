@@ -1,5 +1,7 @@
 package io.github.realkarmakun.pvpflag.networking.packets;
 
+import io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar;
+import io.github.realkarmakun.pvpflag.data.PvpFlagPlayerComponent;
 import io.github.realkarmakun.pvpflag.networking.PvpFlagNetworkHandler;
 import io.github.realkarmakun.pvpflag.util.PersistentEntityData;
 import io.github.realkarmakun.pvpflag.util.PvpFlagData;
@@ -18,14 +20,6 @@ public class PvpFlagSwitchClientToServer {
                                ServerGamePacketListenerImpl netHandler,
                                FriendlyByteBuf buffer,
                                PacketSender responseSender) {
-        if (player instanceof PersistentEntityData playerData) {
-            final var newState = PvpFlagData.switchStatus(playerData);
-            PlayerLookup.all(server).forEach(serverPlayer -> {
-                FriendlyByteBuf buf = PacketByteBufs.create();
-                buf.writeUUID(player.getUUID());
-                buf.writeBoolean(newState);
-                ServerPlayNetworking.send(serverPlayer, PvpFlagNetworkHandler.PVP_FLAG_SYNC_ID, buf);
-            });
-        }
+        PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.get(player).switchState();
     }
 }
