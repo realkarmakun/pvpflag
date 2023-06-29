@@ -2,8 +2,6 @@ package io.github.realkarmakun.pvpflag.networking;
 
 import io.github.realkarmakun.pvpflag.PvpFlagMod;
 import io.github.realkarmakun.pvpflag.networking.packets.PvpFlagSwitchClientToServer;
-import io.github.realkarmakun.pvpflag.networking.packets.PvpFlagSyncServerToClient;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.resources.ResourceLocation;
 

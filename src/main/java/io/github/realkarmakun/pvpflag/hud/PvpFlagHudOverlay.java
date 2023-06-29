@@ -2,7 +2,7 @@ package io.github.realkarmakun.pvpflag.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import io.github.realkarmakun.pvpflag.PvpFlagMod;
-import io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar;
+import io.github.realkarmakun.pvpflag.components.PlayerFlagComponentRegistrar;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -15,7 +15,7 @@ public class PvpFlagHudOverlay implements HudRenderCallback {
     @Override
     public void onHudRender(GuiGraphics drawContext, float tickDelta) {
         Minecraft client = Minecraft.getInstance();
-        PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.maybeGet(client.player).ifPresent(pvpFlagPlayerComponent -> {
+        PlayerFlagComponentRegistrar.FLAG_DATA.maybeGet(client.player).ifPresent(pvpFlagPlayerComponent -> {
             if (pvpFlagPlayerComponent.peekState()) {
                 final var width = client.getWindow().getGuiScaledWidth();
                 final var height = client.getWindow().getGuiScaledHeight();

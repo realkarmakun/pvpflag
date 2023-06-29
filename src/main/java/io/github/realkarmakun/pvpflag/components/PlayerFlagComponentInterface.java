@@ -1,8 +1,8 @@
-package io.github.realkarmakun.pvpflag.data;
+package io.github.realkarmakun.pvpflag.components;
 
 import dev.onyxstudios.cca.api.v3.component.Component;
 
-public interface PvpFlagComponent extends Component {
+public interface PlayerFlagComponentInterface extends Component {
 
     boolean switchState();
 

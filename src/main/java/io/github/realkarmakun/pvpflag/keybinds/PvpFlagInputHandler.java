@@ -1,18 +1,12 @@
 package io.github.realkarmakun.pvpflag.keybinds;
 
-import com.mojang.blaze3d.platform.InputConstants;
-import io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar;
 import io.github.realkarmakun.pvpflag.networking.PvpFlagNetworkHandler;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.ToggleKeyMapping;
-import net.minecraft.network.chat.Component;
 import org.lwjgl.glfw.GLFW;
-
-import javax.swing.text.JTextComponent;
 
 public class PvpFlagInputHandler {
     public static final String PVP_FLAG_KEY_CATEGORY = "key.category.pvpflag";
@@ -27,13 +21,9 @@ public class PvpFlagInputHandler {
                 numberOfTicksHeld++;
             } else if (numberOfTicksHeld != 0 && client.player != null) {
                 ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_SWITCH_ID, PacketByteBufs.create());
-                //PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.get(client.player).switchState();
+                //PlayerFlagComponentRegistrar.PLAYER_FLAG_DATA.get(client.player).switchState();
                 numberOfTicksHeld = 0;
             }
-            /*if (switchPvpStatus.isDown()) {
-                *//*PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.get(client.player).switchState();*//*
-                ClientPlayNetworking.send(PvpFlagNetworkHandler.PVP_FLAG_SWITCH_ID, PacketByteBufs.create());
-            }*/
         });
     }
 

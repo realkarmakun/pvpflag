@@ -16,14 +16,7 @@ public class PvpFlagClient implements ClientModInitializer {
 
         PvpFlagInputHandler.register();
 
-        //PvpFlagNetworkHandler.registerServerToClientPackets();
-
         HudRenderCallback.EVENT.register(new PvpFlagHudOverlay());
 
-        /*LivingEntityFeatureRendererRegistrationCallback.EVENT.register((entityType, entityRenderer, registrationHelper) -> {
-            if (entityType.equals(EntityType.PLAYER)) {
-                registrationHelper.register(new MyFeatureRenderer((PlayerEntityModel) entityRenderer));
-            }
-        });*/
     }
 }

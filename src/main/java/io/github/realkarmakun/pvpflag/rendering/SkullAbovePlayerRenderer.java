@@ -2,7 +2,7 @@ package io.github.realkarmakun.pvpflag.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
-import io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar;
+import io.github.realkarmakun.pvpflag.components.PlayerFlagComponentRegistrar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -17,7 +17,7 @@ public class SkullAbovePlayerRenderer {
 
     public static void renderSkull(LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer, AbstractClientPlayer abstractPlayer, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!shouldRender(abstractPlayer)) return;
-        PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.maybeGet(abstractPlayer).ifPresent(pvpFlagPlayerComponent -> {
+        PlayerFlagComponentRegistrar.FLAG_DATA.maybeGet(abstractPlayer).ifPresent(pvpFlagPlayerComponent -> {
             if (pvpFlagPlayerComponent.peekState()) {
                 // Getting Rendered Dispatcher
                 final var squareDistance = renderer.entityRenderDispatcher.distanceToSqr(abstractPlayer);

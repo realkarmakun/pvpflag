@@ -1,15 +1,15 @@
-package io.github.realkarmakun.pvpflag.data;
+package io.github.realkarmakun.pvpflag.components;
 
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 
-public class PvpFlagPlayerComponent implements PvpFlagComponent, AutoSyncedComponent {
+public class PlayerFlagComponent implements PlayerFlagComponentInterface, AutoSyncedComponent {
     public static final String nbtKey = "pvp-flag-status";
     private final Object provider;
 
     private boolean pvpFlag = false;
 
-    public PvpFlagPlayerComponent(Object provider) {
+    public PlayerFlagComponent(Object provider) {
         this.provider = provider;
     }
 
@@ -37,6 +37,6 @@ public class PvpFlagPlayerComponent implements PvpFlagComponent, AutoSyncedCompo
     @Override
     public void setState(boolean newState) {
         this.pvpFlag = newState;
-        PvpFlagComponentRegistrar.PLAYER_FLAG_DATA.sync(provider);
+        PlayerFlagComponentRegistrar.FLAG_DATA.sync(provider);
     }
 }
