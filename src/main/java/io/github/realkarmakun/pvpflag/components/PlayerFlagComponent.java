@@ -4,7 +4,7 @@ import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
 
 public class PlayerFlagComponent implements PlayerFlagComponentInterface, AutoSyncedComponent {
-    public static final String nbtKey = "pvp-flag-status";
+    public static final String NBT_KEY = "pvp-flag-status";
     private final Object provider;
 
     private boolean pvpFlag = false;
@@ -15,12 +15,12 @@ public class PlayerFlagComponent implements PlayerFlagComponentInterface, AutoSy
 
     @Override
     public void readFromNbt(CompoundTag tag) {
-        setState(tag.getBoolean(nbtKey));
+        setState(tag.getBoolean(NBT_KEY));
     }
 
     @Override
     public void writeToNbt(CompoundTag tag) {
-        tag.putBoolean(nbtKey, peekState());
+        tag.putBoolean(NBT_KEY, peekState());
     }
 
     @Override

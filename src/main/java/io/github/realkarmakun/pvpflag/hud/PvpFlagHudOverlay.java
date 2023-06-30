@@ -10,7 +10,7 @@ import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.resources.ResourceLocation;
 
 public class PvpFlagHudOverlay implements HudRenderCallback {
-    public static final ResourceLocation PVP_FLAG_UP = new ResourceLocation(PvpFlagMod.MOD_ID, "textures/basic_skull.png");
+    public static final ResourceLocation PVP_FLAG_BASIC = new ResourceLocation(PvpFlagMod.MOD_ID, "textures/basic_skull.png");
 
     @Override
     public void onHudRender(GuiGraphics drawContext, float tickDelta) {
@@ -24,8 +24,8 @@ public class PvpFlagHudOverlay implements HudRenderCallback {
 
                 RenderSystem.setShader(GameRenderer::getPositionTexShader);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-                RenderSystem.setShaderTexture(0, PVP_FLAG_UP);
-                drawContext.blit(PVP_FLAG_UP, x + 95 , y - 19, 0, 0, 16, 16, 16, 16);
+                RenderSystem.setShaderTexture(0, PVP_FLAG_BASIC);
+                drawContext.blit(PVP_FLAG_BASIC, x + 95 , y - 19, 0, 0, 16, 16, 16, 16);
             }
         });
 

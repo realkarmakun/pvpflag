@@ -2,6 +2,7 @@ package io.github.realkarmakun.pvpflag.rendering;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
+import io.github.realkarmakun.pvpflag.PvpFlagMod;
 import io.github.realkarmakun.pvpflag.components.PlayerFlagComponentRegistrar;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -14,6 +15,7 @@ import org.joml.Matrix4f;
 import org.lwjgl.opengl.GL11;
 
 public class SkullAbovePlayerRenderer {
+    public static final ResourceLocation PVP_FLAG_BASIC = new ResourceLocation(PvpFlagMod.MOD_ID, "textures/basic_skull.png");
 
     public static void renderSkull(LivingEntityRenderer<AbstractClientPlayer, PlayerModel<AbstractClientPlayer>> renderer, AbstractClientPlayer abstractPlayer, PoseStack poseStack, MultiBufferSource buffer, int packedLight) {
         if (!shouldRender(abstractPlayer)) return;
@@ -67,10 +69,9 @@ public class SkullAbovePlayerRenderer {
     private static void renderSkull(PoseStack poseStack, int x, int y, float alpha) {
         poseStack.pushPose();
         poseStack.scale(1.0f, 1.0f, 1.0f);
-        mojangBlit(io.github.realkarmakun.pvpflag.hud.PvpFlagHudOverlay.PVP_FLAG_UP, poseStack, -3, y, 8, 8, 0, 1, 0, 1, alpha);
+        mojangBlit(PVP_FLAG_BASIC, poseStack, -3, y, 8, 8, 0, 1, 0, 1, alpha);
         poseStack.popPose();
     }
-
 
     private static void mojangBlit(ResourceLocation icon, PoseStack poseStack, int x, int y, int w, int h, float u0, float u1, float v0, float v1, float alpha) {
         Matrix4f matrix = poseStack.last().pose();

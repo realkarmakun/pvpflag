@@ -28,7 +28,7 @@
       "io.github.realkarmakun.pvpflag.PvpFlagMod"
     ],
     "cardinal-components-entity": [
-      "io.github.realkarmakun.pvpflag.data.PvpFlagComponentRegistrar"
+      "io.github.realkarmakun.pvpflag.components.PlayerFlagComponentRegistrar"
     ]
   },
   "mixins": [
@@ -40,7 +40,7 @@
     "minecraft": "${minecraft_version}"
   },
   "suggests": {
-    "cardinal-components-api": ">=5.2.1"
+    "cardinal-components-api": ">=${cardinal_components_api}"
   },
   "custom": {
     "cardinal-components": [
