@@ -1,7 +1,7 @@
 # PvP Flag mod
 Allows players to enter "PvP" mode.
 
-When **enabled** you can not be attacked by others that have the mode **on**. Otherwise you can be attacked.
+Skull marks PvP flag enabled. People with PvP flag disabled (no skull) can not damage you as long as you don't have it enabled as well. In all other cases PvP works.
 
 Like in Project Zomboid.
 
