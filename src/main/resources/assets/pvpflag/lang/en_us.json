@@ -1,4 +1,5 @@
 {
   "key.category.pvpflag": "PvP Flag Mod",
-  "key.pvpflag.switch_pvp": "Turn on/off PvP flag"
+  "key.pvpflag.switch_pvp": "Turn on/off PvP flag",
+  "gamerule.peacefulIndomitability": "Alternative PvP Flag logic"
 }

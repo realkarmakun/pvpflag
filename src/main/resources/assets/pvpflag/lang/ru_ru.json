@@ -1,4 +1,5 @@
 {
   "key.category.pvpflag": "PvP Флаг",
-  "key.pvpflag.switch_pvp": "Включить/выключить PvP флаг"
+  "key.pvpflag.switch_pvp": "Включить/выключить PvP флаг",
+  "gamerule.peacefulIndomitability": "Альтернативная логика PvP флага"
 }
