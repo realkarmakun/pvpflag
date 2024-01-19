@@ -1,6 +1,7 @@
 package io.github.realkarmakun.pvpflag.mixin;
 
 import io.github.realkarmakun.pvpflag.events.PlayerHurtEventCallback;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.player.Player;
