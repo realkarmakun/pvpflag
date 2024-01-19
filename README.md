@@ -5,14 +5,31 @@ Skull marks PvP flag enabled. People with PvP flag disabled (no skull) can not d
 
 If you don't get how PvP works with this mod refer to table below:
 
- **Enemy's skull** | **Your skull** | **Can attack happen?** 
--------------------|----------------|------------------------
- ENABLED           | ENABLED        | YES                    
- ENABLED           | DISABLED       | YES                    
- DISABLED          | ENABLED        | YES                    
- DISABLED          | DISABLED       | NO         
+| **Enemy's skull** | **Your skull** | **Can attack happen?** |
+|-------------------|----------------|------------------------|
+| ENABLED           | ENABLED        | YES                    |
+| ENABLED           | DISABLED       | YES                    |
+| DISABLED          | ENABLED        | YES                    |
+| DISABLED          | DISABLED       | NO                     |
 
 Like in Project Zomboid.
+
+### Alternative logic
+Need more classic enable disable logic? You can change it by setting new GameRule to true like so:
+```
+/gamerule peacefulIndomitability true
+```
+
+People with PvP disabled will not take damage at all. Refer to the table below:
+
+| **Enemy's skull** | **Your skull** | **Can attack happen?** |
+|-------------------|----------------|------------------------|
+| ENABLED           | ENABLED        | YES                    |
+| ENABLED           | DISABLED       | NO                     |
+| DISABLED          | ENABLED        | NO                     |
+| DISABLED          | DISABLED       | NO                     |
+
+
 
 # Credits
 **Skull texture:**
