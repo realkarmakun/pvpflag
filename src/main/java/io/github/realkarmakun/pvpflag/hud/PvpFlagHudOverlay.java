@@ -1,6 +1,7 @@
 package io.github.realkarmakun.pvpflag.hud;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.realkarmakun.pvpflag.PvpFlagMod;
 import io.github.realkarmakun.pvpflag.components.PlayerFlagComponentRegistrar;
 import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
