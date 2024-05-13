@@ -3,6 +3,8 @@ Allows players to enter "PvP" mode.
 
 Skull marks PvP flag enabled. People with PvP flag disabled (no skull) can not damage you as long as you don't have it enabled as well. In all other cases PvP works.
 
+**Default keybind: `K`**
+
 If you don't get how PvP works with this mod refer to table below:
 
 | **Enemy's skull** | **Your skull** | **Can attack happen?** |
