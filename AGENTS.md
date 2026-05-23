@@ -2,12 +2,12 @@
 
 ## Project Structure
 
-Multiplatform Minecraft mod (Fabric + Forge) for MC 1.20.1 using the Kotlin MultiLoader Template.
-All game logic lives in `common/`; `fabric/` and `forge/` are thin platform glue.
+Multiplatform Minecraft mod (Fabric + NeoForge) for MC 1.21.1 using the Kotlin MultiLoader Template.
+All game logic lives in `common/`; `fabric/` and `neoforge/` are thin platform glue.
 
 - **`common/`** — Kotlin + Java sources, mixins, networking, config, rendering, platform service interfaces
 - **`fabric/`** — Fabric entrypoints (`PvpFlagFabric.kt`, `PvpFlagFabricClient.kt`), platform service impls
-- **`forge/`** — `@Mod` class (`PvpFlagForge.kt`), `ClientSetup.kt` (loaded via `runWhenOn`), platform service impls
+- **`neoforge/`** — `@Mod` class (`PvpFlagNeoForge.kt`), `PvpFlagNeoForgeClient.kt` (client events via `@EventBusSubscriber(value = [Dist.CLIENT])`), platform service impls
 - **`buildSrc/`** — shared Gradle conventions (`multiloader-common.gradle`, `multiloader-loader.gradle`)
 
 ## Build & Run
@@ -15,7 +15,7 @@ All game logic lives in `common/`; `fabric/` and `forge/` are thin platform glue
 ```bash
 ./gradlew build                          # build everything
 ./gradlew :fabric:build                  # fabric only
-./gradlew :forge:build                   # forge only
+./gradlew :neoforge:build                # neoforge only
 ./gradlew compileKotlin compileJava      # quick compile check (no jar)
 ```
 
@@ -24,41 +24,49 @@ No tests exist yet. Build success = verification.
 ## Key Architecture Decisions
 
 - **Package**: `io.github.realkarmakun.pvpflag`, Mod ID: `pvpflag`
-- **Networking**: `badpackets` library (cross-platform), NOT platform-specific packet APIs
-- **State**: `SavedData` on overworld (server-authoritative), NOT Cardinal Components
-- **Config**: Forge Config API Port (`fcap`) on both platforms — server common config + client config
-- **Forge uses KotlinForForge (KFF)**: `modLoader = "kotlinforforge"` in mods.toml, uses `MOD_BUS` / `runWhenOn` from `thedarkcolour.kotlinforforge.forge`, NOT `FMLJavaModLoadingContext`
-- **Forge client code**: must be in a separate class loaded via `runWhenOn(Dist.CLIENT)` — never import client classes in `PvpFlagForge` directly, or dedicated server crashes (`RuntimeDistCleaner`)
+- **Mappings**: 100% Mojmap (official). `ResourceLocation` (not `Identifier`).
+- **Networking**: `badpackets` 0.8.x (cross-platform) with **typed payloads** (`CustomPacketPayload` + `StreamCodec`), NOT platform-specific packet APIs
+  - `common()` registers both server and client channels + server receivers + server ready callback
+  - `client()` registers client receivers + client ready callback
+  - All channel types must be registered in `common()` so both sides know about all payload types
+- **State**: `SavedData` on overworld (server-authoritative), using `SavedData.Factory` with `CompoundTag` serialization. `save()` takes `(CompoundTag, HolderLookup.Provider)`.
+- **Config**: Forge Config API Port (`fcap`) on both platforms — uses `net.neoforged.neoforge.common.ModConfigSpec` (NeoForge API). Fabric registers via `NeoForgeConfigRegistry` from fcap.
+- **NeoForge uses KotlinForForge (KFF)**: `modLoader = "kotlinforforge"` in mods.toml, uses `LOADING_CONTEXT` from `thedarkcolour.kotlinforforge.neoforge.forge`
+- **NeoForge client code**: separate `PvpFlagNeoForgeClient` object with `@EventBusSubscriber(value = [Dist.CLIENT])` — never import client classes in `PvpFlagNeoForge` directly, or dedicated server crashes
 
 ## Common Pitfalls
 
 - **`@JvmField`** is required on Kotlin `object` vals accessed from Java (mixins). Without it: "has private access" compile error.
-- **`@Mod.EventBusSubscriber`** on Kotlin objects still gets loaded on dedicated server — use `runWhenOn` instead for Forge client code.
 - **Fabric Loom**: `uploadFile` must be `tasks.remapJar`, not `tasks.jar`.
-- **Forge moddev plugin**: dependency version strings need `.get()` suffix (e.g., `libs.versions.badpackets.get()`).
 - **Minecraft mappings**: use `writeUUID`/`readUUID` (capital D), not `writeUuid`/`readUuid`.
 - **`graphics.blit()` float overload**: u/v offset params must be `0.0f`, not `0` (int overload has different signature).
 - **Kotlin `object` init blocks** run at class load time — any client-only code in them will crash dedicated server.
+- **badpackets 0.8.x**: must use typed payloads (`CustomPacketPayload` subclasses with `StreamCodec`), NOT untyped `ResourceLocation`-based channels. Untyped payloads cause `ClassCastException: UntypedPayload cannot be cast to DiscardedPayload` on NeoForge.
+- **Vertex API (1.21.1)**: `.vertex().uv().color().endVertex()` chain is gone. Use `.addVertex(matrix, x, y, z).setUv(u, v).setColor(r, g, b, a)` with no `endVertex()`. `Tesselator.getInstance().begin()` returns `BufferBuilder` directly (no `.builder`). `bufferBuilder.build()` replaces `.end()`.
+- **`client.frameTime`** is gone in 1.21.1 — use `DeltaTracker.getGameTimeDeltaPartialTick(false)` or `0f`.
+- **`HudRenderCallback`** (Fabric) takes `(GuiGraphics, DeltaTracker)` instead of `(GuiGraphics, float)`.
+- **NeoForge GUI layers**: `RegisterGuiLayersEvent` uses `LayeredDraw.Layer` which takes `(GuiGraphics, DeltaTracker)`.
+- **NeoForge imports**: all `net.minecraftforge.*` → `net.neoforged.*` (e.g. `net.neoforged.neoforge.common.NeoForge` instead of `net.minecraftforge.common.MinecraftForge`).
 
 ## Config Files
 
 - `pvpflag-server.toml` — server-side: `flagLogic` (MUTUAL/PERMISSIVE), `disableTimeoutSeconds`
 - `pvpflag-client.toml` — client-side: HUD skull position, above-player skull position/size/distance
 - `libs.versions.toml` — version catalog (NOT in `gradle/`, it's at project root)
-- `gradle.properties` — mod metadata, version (`version=2.0.0+1.20.1`), Modrinth settings
+- `gradle.properties` — mod metadata, version (`version=2.0.0+1.21.1`), Modrinth settings
 
 ## Publishing to Modrinth
 
 ```bash
 MODRINTH_TOKEN=xxx MODRINTH_DEBUG=false ./gradlew :fabric:modrinth   # publish fabric
-MODRINTH_TOKEN=xxx MODRINTH_DEBUG=false ./gradlew :forge:modrinth    # publish forge
+MODRINTH_TOKEN=xxx MODRINTH_DEBUG=false ./gradlew :neoforge:modrinth  # publish neoforge
 ```
 
 - `MODRINTH_DEBUG` defaults to `true` (dry run) if unset. Set to `false` to actually upload.
 - CI workflow: `.github/workflows/publish.yml` triggers on tag push.
 - Modrinth project slug: `pvpflag`
 - Fabric deps: `fabric-api`, `fabric-language-kotlin`, `badpackets`, `forge-config-api-port`
-- Forge deps: `badpackets`, `kotlin-for-forge`
+- NeoForge deps: `badpackets`, `kotlin-for-forge`
 
 ## Flag State System
 
