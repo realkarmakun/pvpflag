@@ -4,80 +4,120 @@ import io.github.realkarmakun.pvpflag.PvpFlagClientState
 import io.github.realkarmakun.pvpflag.PvpFlagState
 import io.github.realkarmakun.pvpflag.PlayerFlagEntry
 import io.github.realkarmakun.pvpflag.location
-import io.netty.buffer.Unpooled
-import lol.bai.badpackets.api.C2SPacketReceiver
 import lol.bai.badpackets.api.PacketSender
-import lol.bai.badpackets.api.S2CPacketReceiver
-import lol.bai.badpackets.api.event.PacketSenderReadyCallback
+import lol.bai.badpackets.api.play.PlayPackets
 import net.minecraft.network.FriendlyByteBuf
+import net.minecraft.network.codec.StreamCodec
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload
 import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.level.ServerPlayer
 import java.util.UUID
 
+class SwitchPayload private constructor() : CustomPacketPayload {
+    override fun type(): CustomPacketPayload.Type<SwitchPayload> = TYPE
+
+    companion object {
+        @JvmField
+        val ID: ResourceLocation = "switch".location()
+
+        @JvmField
+        val TYPE: CustomPacketPayload.Type<SwitchPayload> = CustomPacketPayload.Type(ID)
+
+        @JvmField
+        val CODEC: StreamCodec<FriendlyByteBuf, SwitchPayload> = CustomPacketPayload.codec(
+            { _: SwitchPayload, _: FriendlyByteBuf -> },
+            { SwitchPayload() }
+        )
+
+        @JvmField
+        val INSTANCE = SwitchPayload()
+    }
+}
+
+class FlagSyncPayload(
+    val uuid: UUID,
+    val stateByte: Byte,
+    val remainingSeconds: Float
+) : CustomPacketPayload {
+    override fun type(): CustomPacketPayload.Type<FlagSyncPayload> = TYPE
+
+    companion object {
+        @JvmField
+        val ID: ResourceLocation = "flag_sync".location()
+
+        @JvmField
+        val TYPE: CustomPacketPayload.Type<FlagSyncPayload> = CustomPacketPayload.Type(ID)
+
+        @JvmField
+        val CODEC: StreamCodec<FriendlyByteBuf, FlagSyncPayload> = CustomPacketPayload.codec(
+            { payload, buf ->
+                buf.writeUUID(payload.uuid)
+                buf.writeByte(payload.stateByte.toInt())
+                if (payload.stateByte == PvpFlagNetwork.STATE_DISABLING) {
+                    buf.writeFloat(payload.remainingSeconds)
+                }
+            },
+            { buf ->
+                val uuid = buf.readUUID()
+                val stateByte = buf.readByte()
+                val remainingSeconds = if (stateByte == PvpFlagNetwork.STATE_DISABLING) buf.readFloat() else 0f
+                FlagSyncPayload(uuid, stateByte, remainingSeconds)
+            }
+        )
+    }
+}
+
 object PvpFlagNetwork {
-    @JvmField
-    val SWITCH_ID: ResourceLocation = "switch".location()
-
-    @JvmField
-    val FLAG_SYNC_ID: ResourceLocation = "flag_sync".location()
-
     const val STATE_DISABLED: Byte = 0
     const val STATE_ENABLED: Byte = 1
     const val STATE_DISABLING: Byte = 2
 
-    fun registerServer() {
-        C2SPacketReceiver.register(SWITCH_ID) { server, player, _, _, _ ->
-            server.execute { handleSwitch(player) }
+    fun common() {
+        PlayPackets.registerServerChannel(SwitchPayload.TYPE, SwitchPayload.CODEC)
+        PlayPackets.registerClientChannel(FlagSyncPayload.TYPE, FlagSyncPayload.CODEC)
+
+        PlayPackets.registerServerReceiver(SwitchPayload.TYPE) { context, _ ->
+            val player = context.player()
+            context.server().execute { handleSwitch(player) }
         }
 
-        PacketSenderReadyCallback.registerServer { handler, sender, server ->
-            val joiningPlayer = handler.player
+        PlayPackets.registerServerReadyCallback { context ->
+            val joiningPlayer = context.player()
+            val server = context.server()
             val state = PvpFlagState.get(joiningPlayer.serverLevel())
             for (serverPlayer in server.playerList.players) {
                 val entry = state.getEntry(serverPlayer.uuid)
                 if (!entry.enabled) continue
 
                 if (serverPlayer.uuid == joiningPlayer.uuid && entry.isDisabling) {
-                    sendDisablingSync(sender, serverPlayer.uuid, entry.remainingSeconds())
+                    context.send(FlagSyncPayload(serverPlayer.uuid, STATE_DISABLING, entry.remainingSeconds()))
                 } else {
-                    sendFlagSync(sender, serverPlayer.uuid, STATE_ENABLED)
+                    context.send(FlagSyncPayload(serverPlayer.uuid, STATE_ENABLED, 0f))
                 }
             }
         }
     }
 
-    fun registerClient() {
-        S2CPacketReceiver.register(FLAG_SYNC_ID) { client, _, buf, _ ->
-            val uuid = buf.readUUID()
-            val stateByte = buf.readByte()
-            val remainingSeconds = if (stateByte == STATE_DISABLING) buf.readFloat() else 0f
-            client.execute {
-                PvpFlagClientState.setFlag(uuid, stateByte, remainingSeconds)
+    fun client() {
+        PlayPackets.registerClientReceiver(FlagSyncPayload.TYPE) { context, payload ->
+            context.client().execute {
+                PvpFlagClientState.setFlag(payload.uuid, payload.stateByte, payload.remainingSeconds)
             }
         }
 
-        PacketSenderReadyCallback.registerClient { _, _, _ ->
+        PlayPackets.registerClientReadyCallback {
             PvpFlagClientState.clear()
         }
     }
 
-    private fun createBuf(): FriendlyByteBuf = FriendlyByteBuf(Unpooled.buffer())
-
     @JvmStatic
     fun sendFlagSync(sender: PacketSender, uuid: UUID, stateByte: Byte) {
-        val buf = createBuf()
-        buf.writeUUID(uuid)
-        buf.writeByte(stateByte.toInt())
-        sender.send(FLAG_SYNC_ID, buf)
+        sender.send(FlagSyncPayload(uuid, stateByte, 0f))
     }
 
     @JvmStatic
     fun sendDisablingSync(sender: PacketSender, uuid: UUID, remainingSeconds: Float) {
-        val buf = createBuf()
-        buf.writeUUID(uuid)
-        buf.writeByte(STATE_DISABLING.toInt())
-        buf.writeFloat(remainingSeconds)
-        sender.send(FLAG_SYNC_ID, buf)
+        sender.send(FlagSyncPayload(uuid, STATE_DISABLING, remainingSeconds))
     }
 
     private fun handleSwitch(player: ServerPlayer) {
@@ -104,6 +144,6 @@ object PvpFlagNetwork {
     }
 
     fun sendSwitchPacket() {
-        PacketSender.c2s().send(SWITCH_ID, createBuf())
+        PacketSender.c2s().send(SwitchPayload.INSTANCE)
     }
 }

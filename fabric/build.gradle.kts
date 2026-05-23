@@ -25,11 +25,13 @@ dependencies {
     modImplementation(libs.fabricApi)
 
     modImplementation(libs.flk)
+    // Badpackets is putting its platform in version instead of making a separate artifact (very naughty)
+    // So we do this bullshit, God bless Kotlin
     modImplementation("lol.bai:badpackets:fabric-${libs.versions.badpackets.get()}")
 
     modApi(libs.fcap.fabric)
 
-    modLocalRuntime("com.terraformersmc:modmenu:7.2.2")
+    modLocalRuntime("com.terraformersmc:modmenu:11.0.4")
 }
 
 loom {
@@ -62,7 +64,7 @@ modrinth {
     versionNumber.set("${project.version}")
     versionType.set(modrinthVersionType)
     uploadFile.set(tasks.remapJar)
-    gameVersions.addAll("1.20.1")
+    gameVersions.addAll("1.21.1")
     loaders.add("fabric")
     debugMode.set(System.getenv("MODRINTH_DEBUG")?.toBoolean() ?: true)
     syncBodyFrom = rootProject.file("README.md").readText()

@@ -1,6 +1,6 @@
 package io.github.realkarmakun.pvpflag
 
-import net.minecraftforge.common.ForgeConfigSpec
+import net.neoforged.neoforge.common.ModConfigSpec
 
 object PvpFlagConfig {
     enum class FlagLogic {
@@ -9,29 +9,29 @@ object PvpFlagConfig {
     }
 
     @JvmField
-    val SPEC: ForgeConfigSpec
+    val SPEC: ModConfigSpec
     @JvmField
-    val FLAG_LOGIC: ForgeConfigSpec.EnumValue<FlagLogic>
+    val FLAG_LOGIC: ModConfigSpec.EnumValue<FlagLogic>
     @JvmField
-    val DISABLE_TIMEOUT_SECONDS: ForgeConfigSpec.DoubleValue
+    val DISABLE_TIMEOUT_SECONDS: ModConfigSpec.DoubleValue
 
     @JvmField
-    val CLIENT_SPEC: ForgeConfigSpec
+    val CLIENT_SPEC: ModConfigSpec
     @JvmField
-    val HUD_SKULL_X_OFFSET: ForgeConfigSpec.IntValue
+    val HUD_SKULL_X_OFFSET: ModConfigSpec.IntValue
     @JvmField
-    val HUD_SKULL_Y_OFFSET: ForgeConfigSpec.IntValue
+    val HUD_SKULL_Y_OFFSET: ModConfigSpec.IntValue
     @JvmField
-    val ABOVE_PLAYER_SKULL_X: ForgeConfigSpec.IntValue
+    val ABOVE_PLAYER_SKULL_X: ModConfigSpec.IntValue
     @JvmField
-    val ABOVE_PLAYER_SKULL_Y_OFFSET: ForgeConfigSpec.IntValue
+    val ABOVE_PLAYER_SKULL_Y_OFFSET: ModConfigSpec.IntValue
     @JvmField
-    val ABOVE_PLAYER_SKULL_SIZE: ForgeConfigSpec.IntValue
+    val ABOVE_PLAYER_SKULL_SIZE: ModConfigSpec.IntValue
     @JvmField
-    val ABOVE_PLAYER_MAX_DISTANCE: ForgeConfigSpec.IntValue
+    val ABOVE_PLAYER_MAX_DISTANCE: ModConfigSpec.IntValue
 
     init {
-        val builder = ForgeConfigSpec.Builder()
+        val builder = ModConfigSpec.Builder()
         builder.comment("PvP Flag configuration").push("general")
 
         FLAG_LOGIC = builder.comment(
@@ -42,14 +42,14 @@ object PvpFlagConfig {
 
         DISABLE_TIMEOUT_SECONDS = builder.comment(
             "Timeout in seconds before the PvP flag is actually disabled.",
-            "During this time, taking or dealing PvP damage cancels the disable.",
+            "During this time, taking or dealing PvP damage cancels pending disable.",
             "Set to 0 to disable instantly."
         ).defineInRange("disableTimeoutSeconds", 5.0, 0.0, 60.0)
 
         builder.pop()
         SPEC = builder.build()
 
-        val clientBuilder = ForgeConfigSpec.Builder()
+        val clientBuilder = ModConfigSpec.Builder()
         clientBuilder.comment("Client-side PvP Flag rendering configuration").push("hud")
 
         HUD_SKULL_X_OFFSET = clientBuilder.comment(

@@ -6,6 +6,7 @@ import net.minecraft.server.level.ServerLevel
 import net.minecraft.world.level.saveddata.SavedData
 import java.util.UUID
 import io.github.realkarmakun.pvpflag.networking.PvpFlagNetwork
+import net.minecraft.core.HolderLookup
 
 data class PlayerFlagEntry(
     val enabled: Boolean,
@@ -80,7 +81,7 @@ class PvpFlagState : SavedData() {
         }
     }
 
-    override fun save(tag: CompoundTag): CompoundTag {
+    override fun save(tag: CompoundTag, p1: HolderLookup.Provider): CompoundTag {
         for ((uuid, entry) in entries) {
             val entryTag = CompoundTag()
             entryTag.putBoolean("enabled", entry.enabled)
@@ -94,6 +95,13 @@ class PvpFlagState : SavedData() {
 
     companion object {
         private const val DATA_NAME = "pvpflag_state"
+
+        @JvmStatic
+        val FACTORY: SavedData.Factory<PvpFlagState> = SavedData.Factory(
+            ::PvpFlagState,
+            { tag, _ -> load(tag) },
+            null
+        )
 
         @JvmStatic
         fun load(tag: CompoundTag): PvpFlagState {
@@ -119,11 +127,7 @@ class PvpFlagState : SavedData() {
 
         @JvmStatic
         fun get(level: ServerLevel): PvpFlagState {
-            return level.server.overworld().dataStorage.computeIfAbsent(
-                { load(it) },
-                { PvpFlagState() },
-                DATA_NAME
-            )
+            return level.server.overworld().dataStorage.computeIfAbsent(FACTORY, DATA_NAME)
         }
     }
 }

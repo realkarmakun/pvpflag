@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Player.class)
 public abstract class PvpFlagHurtMixin {
 
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z", at = @At("HEAD"), cancellable = true)
     public void pvpflag$onHurt(DamageSource damageSource, float damage, CallbackInfoReturnable<Boolean> cir) {
         var causingEntity = damageSource.getEntity();
         Player self = (Player) (Object) this;

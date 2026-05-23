@@ -4,6 +4,7 @@ import com.mojang.blaze3d.systems.RenderSystem
 import io.github.realkarmakun.pvpflag.Constants
 import io.github.realkarmakun.pvpflag.PvpFlagClientState
 import io.github.realkarmakun.pvpflag.PvpFlagConfig
+import io.github.realkarmakun.pvpflag.location
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.GuiGraphics
 import net.minecraft.client.renderer.GameRenderer
@@ -14,7 +15,7 @@ import kotlin.math.sin
 
 object PvpFlagHudOverlay {
     @JvmField
-    val SKULL_TEXTURE: ResourceLocation = ResourceLocation(Constants.MOD_ID, "textures/basic_skull.png")
+    val SKULL_TEXTURE: ResourceLocation = "textures/basic_skull.png".location()
 
     @JvmStatic
     fun render(graphics: GuiGraphics, tickDelta: Float) {

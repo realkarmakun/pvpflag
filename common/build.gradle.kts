@@ -4,8 +4,8 @@ plugins {
 }
 
 
-legacyForge {
-    mcpVersion = libs.versions.neoForm.get()
+neoForge {
+    neoFormVersion = libs.versions.neoForm.get()
     // Automatically enable AccessTransformers if the file exists
     val at = file("src/main/resources/META-INF/accesstransformer.cfg")
     if (at.exists()) {
@@ -19,8 +19,10 @@ legacyForge {
 
 dependencies {
     compileOnly(libs.mixin)
+    compileOnly(libs.mixinExtras.common)
+    annotationProcessor(libs.mixinExtras.common)
     compileOnly("lol.bai:badpackets:mojmap-${libs.versions.badpackets.get()}")
-    compileOnly(libs.fcap.common)
+    api(libs.fcap.common)
 }
 
 configurations {

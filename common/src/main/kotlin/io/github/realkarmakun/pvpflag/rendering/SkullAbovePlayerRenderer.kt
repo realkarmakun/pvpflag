@@ -6,6 +6,7 @@ import io.github.realkarmakun.pvpflag.Constants
 import io.github.realkarmakun.pvpflag.PvpFlagClientState
 import io.github.realkarmakun.pvpflag.PvpFlagConfig
 import io.github.realkarmakun.pvpflag.hud.PvpFlagHudOverlay
+import io.github.realkarmakun.pvpflag.location
 import net.minecraft.client.Minecraft
 import net.minecraft.client.player.AbstractClientPlayer
 import net.minecraft.client.renderer.GameRenderer
@@ -17,7 +18,7 @@ import org.lwjgl.opengl.GL11
 
 object SkullAbovePlayerRenderer {
     @JvmField
-    val SKULL_TEXTURE: ResourceLocation = ResourceLocation(Constants.MOD_ID, "textures/basic_skull.png")
+    val SKULL_TEXTURE: ResourceLocation = "textures/basic_skull.png".location()
 
     @JvmStatic
     fun renderSkull(
@@ -39,20 +40,20 @@ object SkullAbovePlayerRenderer {
         val font = Minecraft.getInstance().font
         val x = font.width(abstractPlayer.displayName)
         val y = (if ("deadmau5" == abstractPlayer.name.string) -28 else -12) + PvpFlagConfig.ABOVE_PLAYER_SKULL_Y_OFFSET.get()
-        val entityHeight = abstractPlayer.nameTagOffsetY
+        val entityHeight = abstractPlayer.bbHeight + 0.5
 
         val baseAlpha = if (abstractPlayer.isDiscrete) 0.3f else 1.0f
         val alpha = if (PvpFlagClientState.isDisabling(abstractPlayer.uuid)) {
             val remaining = PvpFlagClientState.getRemainingTimeout(abstractPlayer.uuid)
             val client = Minecraft.getInstance()
-            val gameTime = (client.level?.gameTime ?: 0L) + client.frameTime
+            val gameTime = (client.level?.gameTime ?: 0L).toFloat()
             baseAlpha * PvpFlagHudOverlay.computePulseAlpha(gameTime, remaining)
         } else {
             baseAlpha
         }
 
         poseStack.pushPose()
-        poseStack.translate(0.0, entityHeight.toDouble(), 0.0)
+        poseStack.translate(0.0, entityHeight, 0.0)
         poseStack.mulPose(dispatcher.cameraOrientation())
         poseStack.scale(-0.025f, -0.025f, 0.025f)
 
@@ -97,12 +98,11 @@ object SkullAbovePlayerRenderer {
         RenderSystem.setShaderTexture(0, icon)
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader)
 
-        val bufferBuilder: BufferBuilder = Tesselator.getInstance().builder
-        bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR)
-        bufferBuilder.vertex(matrix, x.toFloat(), (y + h).toFloat(), 0f).uv(u0, v1).color(1.0f, 1.0f, 1.0f, alpha).endVertex()
-        bufferBuilder.vertex(matrix, (x + w).toFloat(), (y + h).toFloat(), 0f).uv(u1, v1).color(1.0f, 1.0f, 1.0f, alpha).endVertex()
-        bufferBuilder.vertex(matrix, (x + w).toFloat(), y.toFloat(), 0f).uv(u1, v0).color(1.0f, 1.0f, 1.0f, alpha).endVertex()
-        bufferBuilder.vertex(matrix, x.toFloat(), y.toFloat(), 0f).uv(u0, v0).color(1.0f, 1.0f, 1.0f, alpha).endVertex()
-        BufferUploader.drawWithShader(bufferBuilder.end())
+        val bufferBuilder: BufferBuilder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR)
+        bufferBuilder.addVertex(matrix, x.toFloat(), (y + h).toFloat(), 0f).setUv(u0, v1).setColor(1.0f, 1.0f, 1.0f, alpha)
+        bufferBuilder.addVertex(matrix, (x + w).toFloat(), (y + h).toFloat(), 0f).setUv(u1, v1).setColor(1.0f, 1.0f, 1.0f, alpha)
+        bufferBuilder.addVertex(matrix, (x + w).toFloat(), y.toFloat(), 0f).setUv(u1, v0).setColor(1.0f, 1.0f, 1.0f, alpha)
+        bufferBuilder.addVertex(matrix, x.toFloat(), y.toFloat(), 0f).setUv(u0, v0).setColor(1.0f, 1.0f, 1.0f, alpha)
+        BufferUploader.drawWithShader(bufferBuilder.build())
     }
 }
