@@ -5,6 +5,14 @@ Skull marks PvP flag enabled. People with PvP flag disabled (no skull) can not d
 
 **Default keybind: `K`**
 
+> Version 2 came out (sorry for the wait lol)
+> 
+> Now we have:
+> - Adjustable pending timeout, cancled when doing damage or receiving damage
+> - Server config, no more gamerule setup
+> - Fabric NeoForge support, at least 1.20.1
+
+
 If you don't get how PvP works with this mod refer to table below:
 
 | **Enemy's skull** | **Your skull** | **Can attack happen?** |
@@ -17,10 +25,13 @@ If you don't get how PvP works with this mod refer to table below:
 Like in Project Zomboid.
 
 ### Alternative logic
-Need more classic enable disable logic? You can change it by setting new GameRule to true like so:
-```
-/gamerule peacefulIndomitability true
-```
+Need more classic enable disable logic? You can change it in server config.
+
+On server check `world/serverconfig/pvpflag-server.toml` 
+
+Yes, this file can be customized per-world
+
+If you are hosting local save, check save directory 
 
 People with PvP disabled will not take damage at all. Refer to the table below:
 
@@ -38,7 +49,7 @@ People with PvP disabled will not take damage at all. Refer to the table below:
 
 [![CC BY 4.0][cc-by-shield]][cc-by]
 
-by [SkaldingDelight](https://skalding.itch.io/) 
+by [SkaldingDelight](https://skalding.itch.io/)
 
 
 

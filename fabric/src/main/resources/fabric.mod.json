@@ -1,0 +1,48 @@
+{
+    "schemaVersion": 1,
+    "id": "${mod_id}",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "Toggle PvP flag on/off with visual skull indicators.",
+    "authors": ["rkkm"],
+    "contributors": [
+        {
+            "name": "SkaldingDelight",
+            "contact": {
+                "homepage": "https://skalding.itch.io/"
+            }
+        }
+    ],
+    "contact": {
+        "repo": "https://github.com/realkarmakun/pvpflag"
+    },
+    "license": "MIT",
+    "icon": "assets/pvpflag/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            {
+                "adapter": "kotlin",
+                "value": "io.github.realkarmakun.pvpflag.PvpFlagFabricKt::init"
+            }
+        ],
+        "client": [
+            {
+                "adapter": "kotlin",
+                "value": "io.github.realkarmakun.pvpflag.PvpFlagFabricClientKt::initClient"
+            }
+        ]
+    },
+    "mixins": [
+        "${mod_id}.mixins.json",
+        "${mod_id}.fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=${fabric_loader_version}",
+        "fabric-api": "*",
+        "minecraft": "${minecraft_version}",
+        "java": ">=${java_version}",
+        "fabric-language-kotlin": ">=${flk_version}",
+        "badpackets": ">=${badpackets_version}"
+    }
+}

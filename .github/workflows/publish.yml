@@ -1,0 +1,51 @@
+name: Publish to Modrinth
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v6
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v5
+
+      - name: Build
+        run: ./gradlew assemble
+
+      - name: Publish Fabric to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_DEBUG: false
+        run: ./gradlew :fabric:modrinth
+
+      - name: Publish Forge to Modrinth
+        env:
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+          MODRINTH_DEBUG: false
+        run: ./gradlew :forge:modrinth
+
+      - name: Collect release jars
+        run: |
+          mkdir -p release
+          for f in fabric/build/libs/pvpflag-fabric-*.jar forge/build/libs/pvpflag-forge-*.jar; do
+            case "$f" in *-javadoc.jar | *-sources.jar) continue ;; esac
+            cp "$f" release/
+          done
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: release/*.jar
