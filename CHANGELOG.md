@@ -1,5 +1,11 @@
 # PvP Flag — Changelog
 
+## 2.0.2
+
+Update to config offset default because new rendering required different approach with different values. Format is still the same
+
+
+
 ## 2.0.0
 
 **Complete rewrite as a multiplatform Kotlin mod (Fabric + Forge).**
