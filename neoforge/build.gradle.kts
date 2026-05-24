@@ -59,7 +59,7 @@ modrinth {
     versionNumber.set("${project.version}")
     versionType.set(modrinthVersionType)
     uploadFile.set(tasks.jar)
-    gameVersions.addAll("1.21.1")
+    gameVersions.addAll(libs.versions.minecraft.get())
     loaders.addAll("neoforge")
     debugMode.set(System.getenv("MODRINTH_DEBUG")?.toBoolean() ?: true)
     syncBodyFrom = rootProject.file("README.md").readText()

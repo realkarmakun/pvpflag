@@ -35,17 +35,3 @@ jobs:
           MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
           MODRINTH_DEBUG: false
         run: ./gradlew :forge:modrinth
-
-      - name: Collect release jars
-        run: |
-          mkdir -p release
-          for f in fabric/build/libs/pvpflag-fabric-*.jar forge/build/libs/pvpflag-forge-*.jar; do
-            case "$f" in *-javadoc.jar | *-sources.jar) continue ;; esac
-            cp "$f" release/
-          done
-
-      - name: Create GitHub Release
-        uses: softprops/action-gh-release@v2
-        with:
-          body_path: CHANGELOG.md
-          files: release/*.jar
