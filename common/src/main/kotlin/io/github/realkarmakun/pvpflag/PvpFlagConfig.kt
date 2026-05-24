@@ -64,11 +64,11 @@ object PvpFlagConfig {
 
         ABOVE_PLAYER_SKULL_X = clientBuilder.comment(
             "Horizontal offset of the skull icon rendered above other players"
-        ).defineInRange("abovePlayerSkullX", -3, -10000, 10000)
+        ).defineInRange("abovePlayerSkullX", 0, -10000, 10000)
 
         ABOVE_PLAYER_SKULL_Y_OFFSET = clientBuilder.comment(
             "Vertical offset added to the name tag Y position for the skull above players"
-        ).defineInRange("abovePlayerSkullYOffset", 0, -10000, 10000)
+        ).defineInRange("abovePlayerSkullYOffset", -5, -10000, 10000)
 
         ABOVE_PLAYER_SKULL_SIZE = clientBuilder.comment(
             "Size (width and height) of the skull icon rendered above players"

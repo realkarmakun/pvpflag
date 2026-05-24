@@ -5,6 +5,6 @@ import org.slf4j.LoggerFactory
 
 object Constants {
     const val MOD_ID = "pvpflag"
-    @JvmStatic
+    @JvmField
     val LOG: Logger = LoggerFactory.getLogger(MOD_ID)
 }
