@@ -1,15 +1,14 @@
 package io.github.realkarmakun.pvpflag.hud
 
 import com.mojang.blaze3d.systems.RenderSystem
+import com.mojang.blaze3d.vertex.PoseStack
 import io.github.realkarmakun.pvpflag.Constants
 import io.github.realkarmakun.pvpflag.PvpFlagClientState
 import io.github.realkarmakun.pvpflag.PvpFlagConfig
 import net.minecraft.client.Minecraft
-import net.minecraft.client.gui.GuiGraphics
+import net.minecraft.client.gui.GuiComponent
 import net.minecraft.client.renderer.GameRenderer
 import net.minecraft.resources.ResourceLocation
-import kotlin.math.PI
-import kotlin.math.max
 import kotlin.math.sin
 
 object PvpFlagHudOverlay {
@@ -17,7 +16,7 @@ object PvpFlagHudOverlay {
     val SKULL_TEXTURE: ResourceLocation = ResourceLocation(Constants.MOD_ID, "textures/basic_skull.png")
 
     @JvmStatic
-    fun render(graphics: GuiGraphics, tickDelta: Float) {
+    fun render(poseStack: PoseStack, tickDelta: Float) {
         val client = Minecraft.getInstance()
         val player = client.player ?: return
 
@@ -43,7 +42,7 @@ object PvpFlagHudOverlay {
         RenderSystem.enableBlend()
         RenderSystem.defaultBlendFunc()
         RenderSystem.setShaderTexture(0, SKULL_TEXTURE)
-        graphics.blit(SKULL_TEXTURE, width / 2 + xOffset, height - yOffset, 0.0f, 0.0f, 16, 16, 16, 16)
+        GuiComponent.blit(poseStack, width / 2 + xOffset, height - yOffset, 0, 0.0f, 0.0f, 16, 16, 16, 16)
         RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f)
     }
 

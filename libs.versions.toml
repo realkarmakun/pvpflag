@@ -5,28 +5,28 @@ moddev = "2.0.141"
 loom = "1.9-SNAPSHOT"
 dokka = "1.9.20"
 
-minecraft = "1.20.1"
-minecraftRange = "[1.20.1, 1.20.2)"
+minecraft = "1.19.4"
+minecraftRange = "[1.19.4, 1.20)"
 
 # The version of ParchmentMC that is used, see https://parchmentmc.org/docs/getting-started#choose-a-version for new versions
-parchment = "2023.09.03"
-parchmentMC = "1.20.1"
+parchment = "2023.06.26"
+parchmentMC = "1.19.4"
 
-forge = "1.20.1-47.3.0"
-forgeRange = "[47.1, 48)"
+forge = "1.19.4-45.4.3"
+forgeRange = "[45.4, 46)"
 ## This is the version of minecraft that the 'common' project uses, you can find a list of all versions here
 ## For Neo's MDG Legacy Plugin, this is the MCP version (https://files.minecraftforge.net/de/oceanlabs/mcp/mcp_config/index_1.20.1.html)
-neoForm = "1.20.1"
+neoForm = "1.19.4"
 kff = "4.11.0"
 kffRange = "[4, )"
 
 fabricLoader = "0.16.9"
-fabricApi = "0.92.2+1.20.1"
+fabricApi = "0.87.2+1.19.4"
 flk = "1.12.3+kotlin.2.0.21"
 
 mixin = "0.8.5"
 badpackets = "0.4.3"
-fcap = "8.0.3"
+fcap = "6.0.2"
 
 minotaur = "2.+"
 

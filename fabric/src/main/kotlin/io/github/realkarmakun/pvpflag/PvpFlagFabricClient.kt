@@ -18,7 +18,7 @@ fun initClient() {
         }
     }
 
-    HudRenderCallback.EVENT.register { graphics, tickDelta ->
-        PvpFlagHudOverlay.render(graphics, tickDelta)
+    HudRenderCallback.EVENT.register { poseStack, tickDelta ->
+        PvpFlagHudOverlay.render(poseStack, tickDelta)
     }
 }

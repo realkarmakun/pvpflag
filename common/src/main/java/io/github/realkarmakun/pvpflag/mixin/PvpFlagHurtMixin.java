@@ -22,9 +22,9 @@ public abstract class PvpFlagHurtMixin {
 
         if (causingEntity == null) return;
         if (!(causingEntity instanceof Player)) return;
-        if (self.level().isClientSide()) return;
+        if (self.level.isClientSide()) return;
 
-        ServerLevel serverLevel = (ServerLevel) self.level();
+        ServerLevel serverLevel = (ServerLevel) self.level;
         PvpFlagState state = PvpFlagState.Companion.get(serverLevel);
 
         if (state.isDisabling(causingEntity.getUUID())) {

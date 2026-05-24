@@ -29,8 +29,8 @@ object ClientSetup {
     }
 
     private fun onRegisterOverlays(event: RegisterGuiOverlaysEvent) {
-        event.registerAboveAll("pvpflag_hud") { _, graphics, partialTick, _, _ ->
-            PvpFlagHudOverlay.render(graphics, partialTick)
+        event.registerAboveAll("pvpflag_hud") { _, poseStack, partialTick, _, _ ->
+            PvpFlagHudOverlay.render(poseStack, partialTick)
         }
     }
 

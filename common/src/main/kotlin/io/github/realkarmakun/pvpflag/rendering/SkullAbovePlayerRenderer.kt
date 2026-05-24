@@ -39,13 +39,13 @@ object SkullAbovePlayerRenderer {
         val font = Minecraft.getInstance().font
         val x = font.width(abstractPlayer.displayName)
         val y = (if ("deadmau5" == abstractPlayer.name.string) -28 else -12) + PvpFlagConfig.ABOVE_PLAYER_SKULL_Y_OFFSET.get()
-        val entityHeight = abstractPlayer.nameTagOffsetY
+        val entityHeight = abstractPlayer.bbHeight + 0.5f
 
         val baseAlpha = if (abstractPlayer.isDiscrete) 0.3f else 1.0f
         val alpha = if (PvpFlagClientState.isDisabling(abstractPlayer.uuid)) {
             val remaining = PvpFlagClientState.getRemainingTimeout(abstractPlayer.uuid)
             val client = Minecraft.getInstance()
-            val gameTime = (client.level?.gameTime ?: 0L) + client.frameTime
+            val gameTime = (client.level?.gameTime ?: 0L) + client.deltaFrameTime
             baseAlpha * PvpFlagHudOverlay.computePulseAlpha(gameTime, remaining)
         } else {
             baseAlpha

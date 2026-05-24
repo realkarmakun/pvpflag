@@ -32,7 +32,7 @@ object PvpFlagNetwork {
 
         PacketSenderReadyCallback.registerServer { handler, sender, server ->
             val joiningPlayer = handler.player
-            val state = PvpFlagState.get(joiningPlayer.serverLevel())
+            val state = PvpFlagState.get(joiningPlayer.getLevel())
             for (serverPlayer in server.playerList.players) {
                 val entry = state.getEntry(serverPlayer.uuid)
                 if (!entry.enabled) continue
@@ -81,7 +81,7 @@ object PvpFlagNetwork {
     }
 
     private fun handleSwitch(player: ServerPlayer) {
-        val state = PvpFlagState.get(player.serverLevel())
+        val state = PvpFlagState.get(player.getLevel())
         val newEntry = state.requestToggle(player.uuid)
 
         if (newEntry.isDisabling) {
