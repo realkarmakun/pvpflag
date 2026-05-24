@@ -18,5 +18,9 @@ allprojects {
             name = "Fuzs Mod Resources"
             url = uri("https://raw.githubusercontent.com/Fuzss/modresources/main/maven/")
         }
+        maven {
+            name = "Fabric"
+            url = uri("https://maven.fabricmc.net")
+        }
     }
 }

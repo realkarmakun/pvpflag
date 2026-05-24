@@ -20,7 +20,7 @@ legacyForge {
 dependencies {
     compileOnly(libs.mixin)
     compileOnly("lol.bai:badpackets:mojmap-${libs.versions.badpackets.get()}")
-    compileOnly(libs.fcap.common)
+    api(libs.fcap.fabric)
 }
 
 configurations {

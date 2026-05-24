@@ -68,7 +68,7 @@ modrinth {
     versionNumber.set("${project.version}")
     versionType.set(modrinthVersionType)
     uploadFile.set(tasks.jar)
-    gameVersions.addAll("1.19.4")
+    gameVersions.addAll("1.19.2")
     loaders.addAll("forge")
     debugMode.set(System.getenv("MODRINTH_DEBUG")?.toBoolean() ?: true)
     syncBodyFrom = rootProject.file("README.md").readText()

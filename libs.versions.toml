@@ -5,28 +5,28 @@ moddev = "2.0.141"
 loom = "1.9-SNAPSHOT"
 dokka = "1.9.20"
 
-minecraft = "1.19.4"
-minecraftRange = "[1.19.4, 1.20)"
+minecraft = "1.19.2"
+minecraftRange = "[1.19.2, 1.19.4)"
 
 # The version of ParchmentMC that is used, see https://parchmentmc.org/docs/getting-started#choose-a-version for new versions
-parchment = "2023.06.26"
-parchmentMC = "1.19.4"
+parchment = "2022.11.27"
+parchmentMC = "1.19.2"
 
-forge = "1.19.4-45.4.3"
-forgeRange = "[45.4, 46)"
+forge = "1.19.2-43.5.2"
+forgeRange = "[43.5, 46)"
 ## This is the version of minecraft that the 'common' project uses, you can find a list of all versions here
 ## For Neo's MDG Legacy Plugin, this is the MCP version (https://files.minecraftforge.net/de/oceanlabs/mcp/mcp_config/index_1.20.1.html)
-neoForm = "1.19.4"
-kff = "4.11.0"
-kffRange = "[4, )"
+neoForm = "1.19.2"
+kff = "3.12.0"
+kffRange = "[3, 4)"
 
 fabricLoader = "0.16.9"
-fabricApi = "0.87.2+1.19.4"
+fabricApi = "0.77.0+1.19.2"
 flk = "1.12.3+kotlin.2.0.21"
 
 mixin = "0.8.5"
-badpackets = "0.4.3"
-fcap = "6.0.2"
+badpackets = "0.2.3"
+fcap = "4.2.11"
 
 minotaur = "2.+"
 
@@ -37,8 +37,7 @@ fabricApi = { group = "net.fabricmc.fabric-api", name = "fabric-api", version.re
 flk = { group = "net.fabricmc", name = "fabric-language-kotlin", version.ref = "flk" }
 kff = { group = "thedarkcolour", name = "kotlinforforge", version.ref = "kff" }
 mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
-fcap-common = { group = "fuzs.forgeconfigapiport", name = "forgeconfigapiport-common", version.ref = "fcap" }
-fcap-fabric = { group = "fuzs.forgeconfigapiport", name = "forgeconfigapiport-fabric", version.ref = "fcap" }
+fcap-fabric = { group = "net.minecraftforge", name = "forgeconfigapiport-fabric", version.ref = "fcap" }
 
 [plugins]
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
