@@ -1,5 +1,9 @@
 # PvP Flag — Changelog
 
+## 2.0.1
+
+Respect F1 press for skulls above player heads and in HUD
+
 ## 2.0.0
 
 **Complete rewrite as a multiplatform Kotlin mod (Fabric + Forge).**

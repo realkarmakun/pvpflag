@@ -21,6 +21,7 @@ object PvpFlagHudOverlay {
         val client = Minecraft.getInstance()
         val player = client.player ?: return
 
+        if (client.options.hideGui) return
         if (!PvpFlagClientState.getFlag(player.uuid)) return
 
         val width = client.window.guiScaledWidth

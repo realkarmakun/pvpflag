@@ -73,7 +73,7 @@ object SkullAbovePlayerRenderer {
     }
 
     private fun shouldRender(abstractPlayer: AbstractClientPlayer): Boolean {
-        return !abstractPlayer.isLocalPlayer && !abstractPlayer.isSpectator
+        return !abstractPlayer.isLocalPlayer && !abstractPlayer.isSpectator && !Minecraft.getInstance().options.hideGui
     }
 
     private fun renderSkullIcon(poseStack: PoseStack, x: Int, y: Int, alpha: Float) {
